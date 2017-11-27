@@ -25,4 +25,4 @@
 set -e
 
 buildbot-worker create-worker . $BUILDMASTER $WORKERNAME $WORKERPASS
-exec /usr/local/bin/buildbot-worker start --nodaemon
+exec /usr/bin/buildbot-worker start --nodaemon
