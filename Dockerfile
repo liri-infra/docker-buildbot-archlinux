@@ -46,6 +46,4 @@ VOLUME /build
 VOLUME /repo
 USER builduser
 WORKDIR /worker
-RUN buildbot-worker create-worker . $BUILDMASTER $WORKERNAME $WORKERPASS
-ENTRYPOINT ["/usr/local/bin/buildbot-worker"]
-CMD ["start", "--nodaemon"]
+CMD ["/bin/entrypoint"]

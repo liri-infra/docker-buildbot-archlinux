@@ -22,5 +22,7 @@
 # $END_LICENSE$
 #
 
-chown -R builduser /build
-exec su builduser "$@"
+set -e
+
+buildbot-worker create-worker . $BUILDMASTER $WORKERNAME $WORKERPASS
+exec /usr/local/bin/buildbot-worker start --nodaemon
