@@ -27,20 +27,25 @@ ADD entrypoint /bin/entrypoint
 ARG CACHEBUST=1
 RUN mkdir -p /build && \
     mkdir -p /repo && \
+    mkdir -p /worker && \
     cat /tmp/pacman-repo.conf >> /etc/pacman.conf && \
     rm -f /tmp/pacman-repo.conf && \
     sed -i -e 's,^#MAKEFLAGS=,MAKEFLAGS=,g' /etc/makepkg.conf && \
-#    pacman -Sy --noconfirm archlinux-keyring && \
-#    pacman-key --populate && \
-#    pacman-key --refresh-keys && \
     pacman -Syu --noconfirm && \
     pacman-db-upgrade && \
     pacman -S --noconfirm git && \
+    pacman -S --noconfirm python-pip && \
     rm -f /var/cache/pacman/pkg/*.pkg.tar.* && \
+    pip install buildbot-worker && \
     useradd -u 1000 -m builduser && \
     passwd -d builduser && \
     chown -R builduser /build && \
+    chown -R builduser /worker && \
     echo "builduser ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/makepkg
 VOLUME /build
 VOLUME /repo
-CMD ["/bin/entrypoint"]
+USER builduser
+WORKDIR /worker
+RUN buildbot-worker create-worker . $BUILDMASTER $WORKERNAME $WORKERPASS
+ENTRYPOINT ["/usr/local/bin/buildbot-worker"]
+CMD ["start", "--nodaemon"]
