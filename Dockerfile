@@ -37,7 +37,7 @@ RUN mkdir -p /build && \
     pacman -S --noconfirm python-pip && \
     rm -f /var/cache/pacman/pkg/*.pkg.tar.* && \
     pip install buildbot-worker && \
-    useradd -u 1000 -m builduser && \
+    useradd -u 1000 -s /bin/bash -m builduser && \
     passwd -d builduser && \
     chown -R builduser /build && \
     chown -R builduser /worker && \
