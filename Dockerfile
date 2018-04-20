@@ -33,8 +33,7 @@ RUN mkdir -p /build && \
     sed -i -e 's,^#MAKEFLAGS=,MAKEFLAGS=,g' /etc/makepkg.conf && \
     pacman -Syu --noconfirm && \
     pacman-db-upgrade && \
-    pacman -S --noconfirm git && \
-    pacman -S --noconfirm python-pip && \
+    pacman -S --noconfirm git python-pip python-yaml flatpak && \
     rm -f /var/cache/pacman/pkg/*.pkg.tar.* && \
     pip install buildbot-worker==1.1.1 && \
     useradd -u 1000 -s /bin/bash -m builduser && \
